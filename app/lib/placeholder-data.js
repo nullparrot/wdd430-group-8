@@ -1,6 +1,6 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
 // https://nextjs.org/learn/dashboard-app/fetching-data
-const users = [
+const artisans = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
     name: 'User',
@@ -12,7 +12,7 @@ const users = [
 const handcrafts = [	
   {	
     id: '1958dc9e-712f-4377-85e9-fec4b6a6442a',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Cranium : Huichol Art',	
     description: 'Craneo: Huichol miniatures can represent a wide range of subjects, from animals and plants to geometric figures and cultural symbols.',	
     price: 3500,	
@@ -24,7 +24,7 @@ const handcrafts = [
   },	
   {	
     id: '2958dc9e-742f-4377-85e9-fec4b6a6442a',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Cranium : Huichol Art',	
     description: 'Corazón.- Figure decorated using the artistic technique of the Huichol (Wixarika) people.',	
     price: 3500,	
@@ -35,8 +35,8 @@ const handcrafts = [
    rate: 3,	
   },	
   {	
-    id: '4158dc9e-712f-4377-85e9-fec4b6a6442a',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    id: '4958dc9e-712f-4377-85e9-fec4b6a6442x',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Yarn paintings',	
     description: 'The "nierikas" are important ritual and spiritual art objects in the Huichol culture. They are also known as "tablas de estambre" in Spanish..',	
     price: 4500,	
@@ -47,8 +47,8 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '3758dc9a-712f-4377-85e9-fec4b6a6442a',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    id: '4358dc9e-712f-4377-85e9-fec4b6a6442h',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'worsted board ',	
     description: 'The "nierikas" are important ritual and spiritual art objects in the Huichol culture. They are also known as "tablas de estambre" in Spanish.',	
     price: 520000,	
@@ -59,8 +59,8 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '8558dc9e-712f-4377-85e9-fec4b6a6442a',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    id: '8558dc9e-712f-4377-85e9-fec4b6a6442g',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name:'Huichol Art Backpack ',	
     description: 'Huichol art yarn backpacks are traditional handcrafted pieces of the Huichol culture, an indigenous ethnic group that inhabits the mountainous region of the Sierra Madre Occidental in Mexico.',	
     price: 70000,	
@@ -72,7 +72,7 @@ const handcrafts = [
   },	
   {	
     id: '7158dc9e-712f-4377-85e9-fec4b6a6442f',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Beads bracelet : Huichol ',	
     description: 'These bracelets stand out for their vibrant colors and intricate designs, often representing traditional symbols, elements of nature or spiritual motifs significant to the Huichol culture.',	
     price: 30000,	
@@ -84,7 +84,7 @@ const handcrafts = [
   },	
   {	
     id: '5858dc9e-712f-4377-85e9-fec4b6a6442e',	
-    user_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
+    artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Microchaquira earrings : Huichol',	
     description: 'Huichol art microchaquira earrings; handmade artisan jewelry pieces that reflect the rich tradition and artistic skill of the Huichol culture.',	
     price: 25000,	
@@ -94,7 +94,8 @@ const handcrafts = [
     review: 'Good product',	
    rate: 4,	
   },	
-];
+];	
+
 
 const customers = [
   {
@@ -268,7 +269,7 @@ const revenue = [
 ];
 
 module.exports = {
-  users,
+  artisans,
   handcrafts,
   customers,
   invoices,
