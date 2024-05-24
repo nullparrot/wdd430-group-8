@@ -2,8 +2,9 @@ const { db } = require('@vercel/postgres');
 const {
   artisans,
   handcrafts,
+  invoices,
   customers,
-  revenue,
+  revenue
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -70,12 +71,19 @@ async function seedHandcrafts(client) {
     // Insert data into the "handcrafts" table
     const insertedHandcrafts = await Promise.all(
       handcrafts.map(async (handcraft) => {
-        const hashedPassword = await bcrypt.hash(artisan.password, 10);
+        // const hashedPassword = await bcrypt.hash(handcraft.password, 10);
         return client.sql`
-        INSERT INTO handcrafts (id, name, email, password)
-        VALUES (${handcraft.id}, ${handcraft.name}, ${handcraft.description}, 
-                ${handcraft.price}, ${handcraft.category}, ${handcraft.image_url}, 
-                ${handcraft.type}, ${handcraft.review}, ${handcraft.rate})
+        INSERT INTO handcrafts (id, artisan_id, name, description, price, category, image_url, type, review, rate)
+        VALUES (${handcraft.id}, 
+                ${handcraft.artisan_id}, 
+                ${handcraft.name}, 
+                ${handcraft.description}, 
+                ${handcraft.price}, 
+                ${handcraft.category}, 
+                ${handcraft.image_url}, 
+                ${handcraft.type}, 
+                ${handcraft.review},
+                ${handcraft.rate})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),
@@ -101,7 +109,6 @@ async function seedInvoices(client) {
     const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS invoices (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID NOT NULL,
     amount INT NOT NULL,
     status VARCHAR(255) NOT NULL,
     date DATE NOT NULL
@@ -112,13 +119,13 @@ async function seedInvoices(client) {
 
     // Insert data into the "invoices" table
     const insertedInvoices = await Promise.all(
-      invoices.map(
-        (invoice) => client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
+      invoices.map(async (x) => {
+        return client.sql`
+        INSERT INTO invoices (id, amount, status, date)
+        VALUES (${x.customer_id}, ${x.amount}, ${x.status}, ${x.date})
         ON CONFLICT (id) DO NOTHING;
-      `,
-      ),
+        `;
+      }),
     );
 
     console.log(`Seeded ${insertedInvoices.length} invoices`);
@@ -152,9 +159,9 @@ async function seedCustomers(client) {
     // Insert data into the "customers" table
     const insertedCustomers = await Promise.all(
       customers.map(
-        (customer) => client.sql`
+        (x) => client.sql`
         INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
+        VALUES (${x.id}, ${x.name}, ${x.email}, ${x.image_url})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

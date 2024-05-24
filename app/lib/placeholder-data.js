@@ -11,7 +11,7 @@ const artisans = [
 
 const handcrafts = [	
   {	
-    id: '1958dc9e-712f-4377-85e9-fec4b6a6442a',	
+    id: '123e4567-e89b-42d3-a456-556642440000',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Cranium : Huichol Art',	
     description: 'Craneo: Huichol miniatures can represent a wide range of subjects, from animals and plants to geometric figures and cultural symbols.',	
@@ -23,7 +23,7 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '2958dc9e-742f-4377-85e9-fec4b6a6442a',	
+    id: '216749c7-1a6a-4a5e-8a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Cranium : Huichol Art',	
     description: 'Corazón.- Figure decorated using the artistic technique of the Huichol (Wixarika) people.',	
@@ -35,7 +35,7 @@ const handcrafts = [
    rate: 3,	
   },	
   {	
-    id: '4958dc9e-712f-4377-85e9-fec4b6a6442x',	
+    id: '34198c2e-5f6a-4b4e-8a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Yarn paintings',	
     description: 'The "nierikas" are important ritual and spiritual art objects in the Huichol culture. They are also known as "tablas de estambre" in Spanish..',	
@@ -47,7 +47,7 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '4358dc9e-712f-4377-85e9-fec4b6a6442h',	
+    id: '45678901-23e4-5678-9a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'worsted board ',	
     description: 'The "nierikas" are important ritual and spiritual art objects in the Huichol culture. They are also known as "tablas de estambre" in Spanish.',	
@@ -59,7 +59,7 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '8558dc9e-712f-4377-85e9-fec4b6a6442g',	
+    id: '56789012-34e5-6789-9a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name:'Huichol Art Backpack ',	
     description: 'Huichol art yarn backpacks are traditional handcrafted pieces of the Huichol culture, an indigenous ethnic group that inhabits the mountainous region of the Sierra Madre Occidental in Mexico.',	
@@ -71,7 +71,7 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '7158dc9e-712f-4377-85e9-fec4b6a6442f',	
+    id: '67890123-45e6-7890-9a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Beads bracelet : Huichol ',	
     description: 'These bracelets stand out for their vibrant colors and intricate designs, often representing traditional symbols, elements of nature or spiritual motifs significant to the Huichol culture.',	
@@ -83,7 +83,7 @@ const handcrafts = [
    rate: 4,	
   },	
   {	
-    id: '5858dc9e-712f-4377-85e9-fec4b6a6442e',	
+    id: '78901234-56e7-8901-9a23-123456789012',	
     artisan_id: '410544b2-4001-4271-9855-fec4b6a6442a',	
     name: 'Microchaquira earrings : Huichol',	
     description: 'Huichol art microchaquira earrings; handmade artisan jewelry pieces that reflect the rich tradition and artistic skill of the Huichol culture.',	
@@ -95,6 +95,8 @@ const handcrafts = [
    rate: 4,	
   },	
 ];	
+
+
 
 
 const customers = [
@@ -192,7 +194,7 @@ const invoices = [
     date: '2023-08-05',
   },
   {
-    customer_id: customers[7].id,
+    customer_id: customers[6].id,
     amount: 54246,
     status: 'pending',
     date: '2023-07-16',
@@ -271,7 +273,7 @@ const revenue = [
 module.exports = {
   artisans,
   handcrafts,
-  customers,
   invoices,
+  customers,
   revenue,
 };
