@@ -18,8 +18,8 @@ const artisans = [
   },
   {
     id: '3958dc9e-737f-4377-85e9-fec4b6a6442a',
-    lname: 'Hector',
-    fname: 'Simpson',
+    fname: 'Hector',
+    lname: 'Simpson',
     email: 'hector@simpson.com',
     password: '123456',
   },

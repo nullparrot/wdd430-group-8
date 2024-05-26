@@ -33,8 +33,8 @@ export default async function LatestProducts({
                     src={product.image_url}
                     alt={`${product.name}'s profile picture`}
                     className="mr-4 rounded-full"
-                    width={32}
-                    height={32}
+                    width={128}
+                    height={128}
                   />
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold md:text-base">
@@ -42,6 +42,9 @@ export default async function LatestProducts({
                     </p>
                     <p className="hidden text-sm text-gray-500 sm:block">
                       {product.description}
+                    </p>
+                    <p className="text-sm font-semibold text-gray-500 sm:block">
+                      {`By ${product.fname} ${product.lname}`}
                     </p>
                     <p
                       className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
