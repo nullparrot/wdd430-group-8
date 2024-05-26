@@ -7,5 +7,6 @@ WDD 430 Group 8 Project - Handcrafted Haven
 * Hector Olivares Tapia
 * Jared Likeke Kimball Serrao
 * Rutendo Leonah Dongo
+* Nelson Attah
 
 Next.js starter template from [Learn Next.js](https://nextjs.org/learn).
