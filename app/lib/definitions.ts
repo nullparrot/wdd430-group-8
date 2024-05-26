@@ -9,6 +9,37 @@ export type User = {
   password: string;
 };
 
+export type Artisans = {
+  id: string;
+  fname: string;
+  lname: string;
+  email: string;
+  password: string;
+};
+
+export type LatestProduct = {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  image_url: string;
+  category: string;
+};
+
+export type Product = {
+  id: string;
+  artisan_id: string;
+  name: string;
+  description: number;
+  price: number;
+  date: string;
+};
+
+// The database returns a number for amount, but we later format it to a string with the formatCurrency function
+export type LatestProductRaw = Omit<LatestProduct, 'price'> & {
+  price: number;
+};
+
 export type Customer = {
   id: string;
   name: string;
