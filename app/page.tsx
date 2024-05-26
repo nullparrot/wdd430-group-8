@@ -6,6 +6,11 @@ import Image from 'next/image';
 import TopNav from './ui/topnav';
 import HandcraftLogo from './ui/handcraft-logo';
 
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Handcrafted Haven',
+};
+
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col pb-6 ">
@@ -29,7 +34,7 @@ export default function Page() {
         </div>
         <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           <Image
-            src="/hero-desktop.png"
+            src="/hero-desktop.jpg"
             width={1000}
             height={760}
             className="hidden md:block"
