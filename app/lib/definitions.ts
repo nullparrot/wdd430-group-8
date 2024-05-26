@@ -24,6 +24,8 @@ export type LatestProduct = {
   price: string;
   image_url: string;
   category: string;
+  fname: string;
+  lname: string;
 };
 
 export type Product = {
