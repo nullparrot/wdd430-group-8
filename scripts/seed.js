@@ -1,227 +1,182 @@
-const { db } = require('@vercel/postgres');
+
+require('dotenv').config();
+const { Client } = require('pg');
+const bcrypt = require('bcrypt');
 const {
   artisans,
-  handcrafts,
-  customers,
-  revenue,
-} = require('../app/lib/placeholder-data.js');
-const bcrypt = require('bcrypt');
+  products,
+  reviews,
+} = require('../app/lib/placeholder-data.js');  // Corrected path
+
+async function dropTables(client) {
+  try {
+    await client.query(`
+      DROP TABLE IF EXISTS reviews;
+      DROP TABLE IF EXISTS products;
+      DROP TABLE IF EXISTS artisans;
+    `);
+    console.log(`Dropped existing tables`);
+  } catch (error) {
+    console.error('Error dropping tables:', error);
+    throw error;
+  }
+}
+
+async function createTables(client) {
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS artisans (
+        id SERIAL PRIMARY KEY,
+        fname VARCHAR(100),
+        lname VARCHAR(100),
+        email VARCHAR(100) UNIQUE,
+        password VARCHAR(100)
+      );
+    `);
+    console.log(`Created "artisans" table`);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(100),
+        description VARCHAR(255),
+        price DECIMAL(10,2),
+        category VARCHAR(45),
+        image_url VARCHAR(100),
+        artisan_id INT,
+        FOREIGN KEY (artisan_id) REFERENCES artisans(id)
+      );
+    `);
+    console.log(`Created "products" table`);
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(50),
+        body TEXT,
+        product_id INT,
+        FOREIGN KEY (product_id) REFERENCES products(id)
+      );
+    `);
+    console.log(`Created "reviews" table`);
+  } catch (error) {
+    console.error('Error creating tables:', error);
+    throw error;
+  }
+}
 
 async function seedArtisans(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "artisans" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS artisans (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
-      );
-    `;
-
-    console.log(`Created "artisans" table`);
-
-    // Insert data into the "artisans" table
     const insertedArtisans = await Promise.all(
       artisans.map(async (artisan) => {
         const hashedPassword = await bcrypt.hash(artisan.password, 10);
-        return client.sql`
-        INSERT INTO artisans (id, name, email, password)
-        VALUES (${artisan.id}, ${artisan.name}, ${artisan.email}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-      }),
+        const existingArtisan = await client.query(`
+          SELECT id, email FROM artisans WHERE email = $1;
+        `, [artisan.email]);
+
+        if (existingArtisan.rows.length > 0) {
+          return existingArtisan.rows[0];
+        } else {
+          const result = await client.query(`
+            INSERT INTO artisans (fname, lname, email, password)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, email;
+          `, [artisan.fname, artisan.lname, artisan.email, hashedPassword]);
+          return result.rows[0];
+        }
+      })
     );
 
     console.log(`Seeded ${insertedArtisans.length} artisans`);
 
-    return {
-      createTable,
-      artisans: insertedArtisans,
-    };
+    // Debug: log the insertedArtisans array
+    console.log('Inserted artisans:', insertedArtisans);
+
+    return insertedArtisans;
   } catch (error) {
     console.error('Error seeding artisans:', error);
     throw error;
   }
 }
 
-async function seedHandcrafts(client) {
+async function seedProducts(client, insertedArtisans) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "handcrafts" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS handcrafts (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        artisan_id UUID NOT NULL,
-        name VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
-        price INT NOT NULL,
-        category VARCHAR(255) NOT NULL,
-        image_url VARCHAR(255) NOT NULL,
-        type VARCHAR(255) NOT NULL,
-        review VARCHAR(255),
-        rate VARCHAR(255)
-      );
-    `;
+    const insertedProducts = await Promise.all(
+      products.map(async (product) => {
+        const artisan = insertedArtisans.find(a => a.email === product.artisan_email);
 
-    console.log(`Created "handcrafts" table`);
+        // Debug: log the current product and the found artisan
+        console.log('Product:', product);
+        console.log('Found artisan:', artisan);
 
-    // Insert data into the "handcrafts" table
-    const insertedHandcrafts = await Promise.all(
-      handcrafts.map(async (handcraft) => {
-        const hashedPassword = await bcrypt.hash(artisan.password, 10);
-        return client.sql`
-        INSERT INTO handcrafts (id, name, email, password)
-        VALUES (${handcraft.id}, ${handcraft.name}, ${handcraft.description}, 
-                ${handcraft.price}, ${handcraft.category}, ${handcraft.image_url}, 
-                ${handcraft.type}, ${handcraft.review}, ${handcraft.rate})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-      }),
+        if (!artisan) {
+          throw new Error(`Artisan with email ${product.artisan_email} not found`);
+        }
+        const result = await client.query(`
+          INSERT INTO products (title, description, price, category, image_url, artisan_id)
+          VALUES ($1, $2, $3, $4, $5, $6)
+          RETURNING id;
+        `, [product.title, product.description, product.price, product.category, product.image_url, artisan.id]);
+        return {
+          ...result.rows[0],
+          title: product.title,
+          description: product.description,
+        };
+      })
     );
 
-    console.log(`Seeded ${insertedHandcrafts.length} handcrafts`);
+    console.log(`Seeded ${insertedProducts.length} products`);
 
-    return {
-      createTable,
-      handcrafts: insertedHandcrafts,
-    };
+    return insertedProducts;
   } catch (error) {
-    console.error('Error seeding handcrafts:', error);
+    console.error('Error seeding products:', error);
     throw error;
   }
 }
 
-async function seedInvoices(client) {
+async function seedReviews(client, insertedProducts) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
-    // Create the "invoices" table if it doesn't exist
-    const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS invoices (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID NOT NULL,
-    amount INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
-  );
-`;
-
-    console.log(`Created "invoices" table`);
-
-    // Insert data into the "invoices" table
-    const insertedInvoices = await Promise.all(
-      invoices.map(
-        (invoice) => client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-      ),
+    const insertedReviews = await Promise.all(
+      reviews.map(async (review) => {
+        const product = insertedProducts[review.product_index];
+        if (!product) {
+          throw new Error(`Product with index ${review.product_index} not found`);
+        }
+        const result = await client.query(`
+          INSERT INTO reviews (name, body, product_id)
+          VALUES ($1, $2, $3)
+          RETURNING id;
+        `, [review.name, review.body, product.id]);
+        return result.rows[0];
+      })
     );
 
-    console.log(`Seeded ${insertedInvoices.length} invoices`);
+    console.log(`Seeded ${insertedReviews.length} reviews`);
 
-    return {
-      createTable,
-      invoices: insertedInvoices,
-    };
+    return insertedReviews;
   } catch (error) {
-    console.error('Error seeding invoices:', error);
-    throw error;
-  }
-}
-
-async function seedCustomers(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
-    // Create the "customers" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS customers (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        image_url VARCHAR(255) NOT NULL
-      );
-    `;
-
-    console.log(`Created "customers" table`);
-
-    // Insert data into the "customers" table
-    const insertedCustomers = await Promise.all(
-      customers.map(
-        (customer) => client.sql`
-        INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-      ),
-    );
-
-    console.log(`Seeded ${insertedCustomers.length} customers`);
-
-    return {
-      createTable,
-      customers: insertedCustomers,
-    };
-  } catch (error) {
-    console.error('Error seeding customers:', error);
-    throw error;
-  }
-}
-
-async function seedRevenue(client) {
-  try {
-    // Create the "revenue" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS revenue (
-        month VARCHAR(4) NOT NULL UNIQUE,
-        revenue INT NOT NULL
-      );
-    `;
-
-    console.log(`Created "revenue" table`);
-
-    // Insert data into the "revenue" table
-    const insertedRevenue = await Promise.all(
-      revenue.map(
-        (rev) => client.sql`
-        INSERT INTO revenue (month, revenue)
-        VALUES (${rev.month}, ${rev.revenue})
-        ON CONFLICT (month) DO NOTHING;
-      `,
-      ),
-    );
-
-    console.log(`Seeded ${insertedRevenue.length} revenue`);
-
-    return {
-      createTable,
-      revenue: insertedRevenue,
-    };
-  } catch (error) {
-    console.error('Error seeding revenue:', error);
+    console.error('Error seeding reviews:', error);
     throw error;
   }
 }
 
 async function main() {
-  const client = await db.connect();
+  const client = new Client({
+    connectionString: process.env.POSTGRES_URL,
+  });
 
-  await seedArtisans(client);
-  await seedHandcrafts(client);
-  await seedCustomers(client);
-  await seedInvoices(client);
-  await seedRevenue(client);
+  await client.connect();
+
+  await dropTables(client);
+  await createTables(client);
+
+  const insertedArtisans = await seedArtisans(client);
+  const insertedProducts = await seedProducts(client, insertedArtisans);
+  await seedReviews(client, insertedProducts);
 
   await client.end();
 }
 
 main().catch((err) => {
-  console.error(
-    'An error occurred while attempting to seed the database:',
-    err,
-  );
+  console.error('An error occurred while attempting to seed the database:', err);
 });
