@@ -5,7 +5,7 @@ import { lusitana } from './ui/fonts';
 import Image from 'next/image';
 import TopNav from './ui/topnav';
 import HandcraftLogo from './ui/handcraft-logo';
-import LatestInvoices from '@/app/ui/latest-products';
+import LatestProducts from '@/app/ui/latest-products';
 import { fetchLatestProducts } from '@/app/lib/data';
 
 
@@ -48,7 +48,7 @@ export default async function Page() {
           />
         </div> */}
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-4">
-          <LatestInvoices latestProducts={latestProducts} />
+          <LatestProducts latestProducts={latestProducts} />
         </div>
       </div>
     </main>
