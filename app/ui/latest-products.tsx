@@ -1,6 +1,7 @@
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import { LatestProduct } from '@/app/lib/definitions';
 
@@ -30,11 +31,12 @@ export default async function LatestProducts({
                   },
                 )}
               >
-                <div className="flex items-center">
+                <div>
+                  <Link href={`../products/${product.id}`} className="flex items-center">
                   <Image
                     src={product.image_url}
-                    alt={`${product.name}'s profile picture`}
-                    className="mr-4 rounded-full"
+                    alt={`${product.name}`}
+                    className="mr-4"
                     width={128}
                     height={128}
                   />
@@ -54,6 +56,8 @@ export default async function LatestProducts({
                       {product.price}
                     </p>
                   </div>
+                  </Link>
+                  
                 </div>
               </div>
             );
