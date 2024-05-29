@@ -4,7 +4,7 @@ async function dropArtisans(client) {
   try {
     // Create the "artisans" table if it doesn't exist
     const dropTable = await client.sql`
-      DROP TABLE artisans CASCADE;
+      DROP TABLE IF EXISTS artisans CASCADE;
     `;
 
     console.log(`Dropped "artisans" table`);
@@ -22,7 +22,7 @@ async function dropProducts(client) {
   try {
     // Create the "products" table if it doesn't exist
     const dropTable = await client.sql`
-      DROP TABLE products CASCADE;
+      DROP TABLE IF EXISTS products CASCADE;
     `;
 
     console.log(`Dropped "products" table`);
@@ -40,7 +40,7 @@ async function dropReviews(client) {
   try {
     // Create the "reviews" table if it doesn't exist
     const dropTable = await client.sql`
-        DROP TABLE reviews CASCADE;
+        DROP TABLE IF EXISTS reviews CASCADE;
     `;
 
     console.log(`Dropped "reviews" table`);
