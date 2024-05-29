@@ -6,10 +6,12 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   LatestProductRaw,
+  IndiProduct,
   User,
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
@@ -50,6 +52,28 @@ export async function fetchLatestProducts() {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest products.');
+  }
+}
+
+export async function fetchProductById(id: string) {
+  noStore();
+  try {
+    const data = await sql<IndiProduct>`
+    SELECT products.id, products.name, products.description, products.price, products.image_url, products.category, products.artisan_id, artisans.fname, artisans.lname
+    FROM products
+    JOIN artisans ON products.artisan_id = artisans.id
+    WHERE products.id=${id}
+    LIMIT 1`
+
+    const indiProduct = data.rows.map((indiProduct) => ({
+      ...indiProduct
+    }));
+    console.log(indiProduct); // Invoice is an empty array []
+    return indiProduct[0];
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch product id ${id}`);
   }
 }
 

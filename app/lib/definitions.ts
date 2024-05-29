@@ -32,9 +32,21 @@ export type Product = {
   id: string;
   artisan_id: string;
   name: string;
-  description: number;
+  description: string;
   price: number;
   date: string;
+};
+
+export type IndiProduct = {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  image_url: string;
+  category: string;
+  artisan_id: string;
+  fname: string;
+  lname: string;
 };
 
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
