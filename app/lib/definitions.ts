@@ -37,6 +37,14 @@ export type Product = {
   date: string;
 };
 
+export type Review = {
+  id: string;
+  product_id: string;
+  user_name: string;
+  comment: string;
+  rating: number;
+}
+
 export type IndiProduct = {
   id: string;
   name: string;
