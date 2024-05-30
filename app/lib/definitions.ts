@@ -24,8 +24,10 @@ export type LatestProduct = {
   price: string;
   image_url: string;
   category: string;
+  // These fields belong to artisans table
   fname: string;
   lname: string;
+  image_url_artisan: string;
 };
 
 export type Product = {
