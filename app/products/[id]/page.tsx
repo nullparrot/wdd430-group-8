@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { lusitana } from '@/app/ui/fonts';
+import ProductReviews from '@/app/ui/products/reviews';
 
 export const metadata: Metadata = {
   title: 'Product Page',
@@ -24,6 +25,9 @@ export default async function Page({ params }: { params: { id: string } }) {
       <p><strong>Seller: </strong><Link href={`../sellers/${product.artisan_id}`}>{product.fname} {product.lname}</Link></p>
       <p><strong>Description: </strong>{product.description}</p>
       <p><strong>Category: </strong>{product.category}</p>
+      </div>
+      <div>
+        <ProductReviews id={params.id} />
       </div>
     </div>;
   }
