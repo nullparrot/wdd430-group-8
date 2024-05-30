@@ -1,7 +1,6 @@
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Image from 'next/image';
-import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import { LatestProduct } from '@/app/lib/definitions';
 
@@ -31,12 +30,11 @@ export default async function LatestProducts({
                   },
                 )}
               >
-                <div>
-                  <Link href={`../products/${product.id}`} className="flex items-center">
+                <div className="flex items-center">
                   <Image
                     src={product.image_url}
-                    alt={`${product.name}`}
-                    className="mr-4"
+                    alt={`${product.name}'s profile picture`}
+                    className="mr-4 rounded-full"
                     width={128}
                     height={128}
                   />
@@ -48,7 +46,14 @@ export default async function LatestProducts({
                       {product.description}
                     </p>
                     <p className="text-sm font-semibold text-gray-500 sm:block">
-                      {`By ${product.fname} ${product.lname}`}
+                      <Image
+                        src={product.image_url_artisan}
+                        alt={`${product.image_url_artisan}'s profile picture`}
+                        className="mr-4 rounded-full"
+                        width={32}
+                        height={32}
+                      />
+                      {`By ${product.fname} ${product.lname}`}  &nbsp;&nbsp;&nbsp;  {`Category: ${product.category}`}
                     </p>
                     <p
                       className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
@@ -56,8 +61,6 @@ export default async function LatestProducts({
                       {product.price}
                     </p>
                   </div>
-                  </Link>
-                  
                 </div>
               </div>
             );
