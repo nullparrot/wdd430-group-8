@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const product = await fetchProductById(params.id)
-  return <div className="flex w-full flex-row md:col-span-4">
+  return <div className="flex w-full flex-col md:col-span-2">
     <Image
         src={product.image_url}
         alt={`Picture of ${product.name}`}
