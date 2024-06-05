@@ -10,7 +10,7 @@ import { fetchLatestProducts } from '@/app/lib/data';
 
 
 export default async function Page() {
-  const latestProducts = await fetchLatestProducts();
+  /*const latestProducts = await fetchLatestProducts();*/
   return (
     <main className="flex min-h-screen flex-col pb-6 ">
       <div className="flex h-80 shrink-0 items-end rounded-lg bg-[url('/hero-mobile.jpg')] bg-cover p-4 md:bg-[url('/hero-desktop.jpg')]"></div>
@@ -48,7 +48,7 @@ export default async function Page() {
           />
         </div> */}
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-4">
-          <LatestProduct latestProducts={latestProducts} />
+          {/*<LatestProduct latestProducts={latestProducts} />*/}
         </div>
       </div>
     </main>
