@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { lusitana } from '@/app/ui/fonts';
-import ProductReviews from '@/app/ui/products/reviews';
+import ProductReviews from '@/app/ui/products/reviews/reviews';
 
 export const metadata: Metadata = {
   title: 'Product Page',

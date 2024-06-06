@@ -1,17 +1,21 @@
 import { fetchReviewsByProductId } from '@/app/lib/data';
 import { lusitana } from '@/app/ui/fonts';
-import { StarIcon as BlankStar, CodeBracketIcon } from '@heroicons/react/24/outline';
-import { StarIcon as FullStar } from '@heroicons/react/24/solid';
+import { StarIcon} from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import ReviewForm from '@/app/ui/products/reviews/create-review'
 
 
 export default async function ProductReviews({id}:{id: string}){
     const reviews = await fetchReviewsByProductId(id)
-    console.log(reviews.length)
     if (reviews.length < 1){
         return <div className='w-full p-4 divide-y divide-solid divide-black'>
         <h2 className={`${lusitana.className} text-xl md:text-2xl`}>Product Reviews</h2>
         <div divide-y divide-solid divide-grey-700>
-            <p>No Reviews</p></div></div>
+            <p>No Reviews</p>
+        {/* <Link href={`/products/reviews/${id}`}  className='font-bold underline'>
+            Be the first to leave a review!</Link> */}
+            <ReviewForm id={id} ></ReviewForm>
+            </div></div>
     }
     return <div className='w-full p-4 divide-y divide-solid divide-black'>
         <h2 className={`${lusitana.className} text-xl md:text-2xl`}>Product Reviews</h2>
@@ -51,9 +55,9 @@ export default async function ProductReviews({id}:{id: string}){
                         {
                             rating.map((rate, i) => {
                                 if (rate == 1){
-                                    return <FullStar key={i} className='w-5' />
+                                    return <StarIcon key={i} className='w-5 text-amber-700 fill-amber-700' />
                                 } else{
-                                    return <BlankStar key={i} className='w-5' />
+                                    return <StarIcon key={i} className='w-5 text-amber-700' />
                                 }
                             })
                         }</div>
@@ -64,6 +68,7 @@ export default async function ProductReviews({id}:{id: string}){
             })
         }
         </div>
+        <ReviewForm id={id} ></ReviewForm>
         
     </div>
 }
