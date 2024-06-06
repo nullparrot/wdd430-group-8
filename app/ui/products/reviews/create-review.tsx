@@ -27,16 +27,16 @@ export default function ReviewForm(id: {id: string}) {
                 type="string"
                 placeholder="Name"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
+                aria-describedby="user_name-error"
               />
             </div>
-            <div id="amount-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.user_name &&
+            <div id="user_name-error" aria-live="polite" aria-atomic="true">
+        {/* {state.errors?.user_name &&
           state.errors.user_name.map((error: string) => (
             <p className="mt-2 text-sm text-red-500" key={error}>
               {error}
             </p>
-          ))}
+          ))} */}
       </div>
           </div>
         </div>
@@ -58,12 +58,12 @@ export default function ReviewForm(id: {id: string}) {
               />
             </div>
             <div id="comment-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.comment &&
+        {/* {state.errors?.comment &&
           state.errors.comment.map((error: string) => (
             <p className="mt-2 text-sm text-red-500" key={error}>
               {error}
             </p>
-          ))}
+          ))} */}
       </div>
           </div>
         </div>
@@ -88,12 +88,12 @@ export default function ReviewForm(id: {id: string}) {
               />
             </div>
             <div id="rating-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.rating &&
+        {/* {state.errors?.rating &&
           state.errors.rating.map((error:  string) => (
             <p className="mt-2 text-sm text-red-500" key={error}>
               {error}
             </p>
-          ))}
+          ))} */}
       </div>
           </div>
         </div>
