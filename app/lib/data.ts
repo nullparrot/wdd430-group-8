@@ -9,6 +9,7 @@ import {
   IndiProduct,
   User,
   Revenue,
+  Review
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -68,12 +69,30 @@ export async function fetchProductById(id: string) {
     const indiProduct = data.rows.map((indiProduct) => ({
       ...indiProduct
     }));
-    console.log(indiProduct); // Invoice is an empty array []
     return indiProduct[0];
 
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch product id ${id}`);
+  }
+}
+
+export async function fetchReviewsByProductId(id: string) {
+  noStore();
+  try {
+    const data = await sql<Review>`
+    SELECT id, product_id, user_name, comment, rating
+    FROM reviews
+    WHERE product_id=${id}`
+
+    const review = data.rows.map((review) => ({
+      ...review
+    }));
+    return review;
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch reviews for product id ${id}`);
   }
 }
 
